@@ -1,0 +1,46 @@
+name: 백엔드 @app/media CD
+
+on:
+  push:
+    branches: [main, release, media-build]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: ✅ 체크아웃
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: ☑️ pnpm 버전 설정
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: ☑️ 노드 버전 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+          
+      - name: Cache Mediasoup build
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules/mediasoup
+          key: mediasoup-build-${{ runner.os }}-${{ hashFiles('**/mediasoup/**/*') }}
+          restore-keys: |
+            mediasoup-build-${{ runner.os }}-
+
+      - name: ⬇️ 의존성 설치
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: 📦 프로젝트 빌드
+        run: pnpm build:media
