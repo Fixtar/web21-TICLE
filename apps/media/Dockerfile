@@ -50,6 +50,8 @@ COPY --from=builder /app/out/full/ .
 
 RUN pnpm build:media
 
+RUN ls -al /app/apps/media
+
 COPY --from=builder /app/apps/media/.env /app/apps/media/dist/.env
 COPY --from=builder /app/apps/media/.env /app/.env
 
