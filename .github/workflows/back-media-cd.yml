@@ -90,7 +90,7 @@ jobs:
 
       - name: 🐳 Docker 이미지 다운로드
         run: |
-          docker pull ${{secrets.DOCKER_REGISTRY_URL}}/media:${{ github.sha }}
+          docker pull ${{secrets.DOCKER_REGISTRY_ACCESS_KEY}}/media:${{ github.sha }}
 
       - name: 🐳 Docker 기존 컨테이너 종료
         run: |
@@ -99,4 +99,4 @@ jobs:
 
       - name: 🐳 media 컨테이너 실행
         run: |
-          docker run -dit --name media -p 3002:3002 -p 30000-30500:30000-30500/tcp -p 30000-30500:30000-30500/udp  ${{secrets.DOCKER_REGISTRY_URL}}/media:${{ github.sha }}
+          docker run -dit --name media -p 3002:3002 -p 30000-30500:30000-30500/tcp -p 30000-30500:30000-30500/udp  ${{secrets.DOCKER_REGISTRY_ACCESS_KEY}}/media:${{ github.sha }}
