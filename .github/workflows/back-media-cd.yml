@@ -70,8 +70,6 @@ jobs:
           tags: ${{secrets.DOCKER_REGISTRY_URL}}/media:${{ github.sha }},${{secrets.DOCKER_REGISTRY_URL}}/media:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            ENV_FILE=apps/media/.env
 
   pull-and-run:
     needs: build
