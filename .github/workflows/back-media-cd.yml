@@ -68,10 +68,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
+  pull-and-run:
     needs: build
-    name: Deploy media
-    runs-on: [ticle-main]
+    name: Pull and Run media
+    runs-on: ubuntu-latest
 
     steps:
       - name: 🐳 Docker 로그인
@@ -93,7 +93,3 @@ jobs:
       - name: 🐳 media 컨테이너 실행
         run: |
           docker run -dit --name media -p 3002:3002 -p 30000-30500:30000-30500/tcp -p 30000-30500:30000-30500/udp  ${{secrets.DOCKER_REGISTRY_URL}}/media:${{ github.sha }}
-
-      - name: 🐳 사용하지 않는 Docker 이미지 제거
-        run: |
-          docker image prune --all --force
