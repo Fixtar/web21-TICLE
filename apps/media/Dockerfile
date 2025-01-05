@@ -20,6 +20,10 @@ RUN npm install -g pnpm
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
+# 환경변수 파일을 지정된 경로로 복사
+ARG ENV_FILE
+COPY ${ENV_FILE} /app/apps/media/.env
+
 RUN pnpm install -g turbo@^2.2.3
 
 COPY . .
