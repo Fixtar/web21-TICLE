@@ -24,11 +24,6 @@ RUN pnpm install -g turbo@^2.2.3
 
 COPY . .
 
-# ../packages 디렉토리의 존재 여부 확인
-RUN if [ -d ./../packages ]; then echo "Directory ./../packages exists."; else echo "Directory ./../packages does not exist."; fi
-
-COPY ../packages /type
-
 RUN turbo prune @app/media --docker
 
 FROM base AS runner
