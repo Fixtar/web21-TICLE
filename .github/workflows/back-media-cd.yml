@@ -2,7 +2,7 @@ name: 백엔드 @app/media CD
 
 on:
   push:
-    branches: [main, release]
+    branches: [main, release, fix/#5/build-cache]
 
 jobs:
   ci:
@@ -60,7 +60,13 @@ jobs:
           password: ${{secrets.DOCKER_REGISTRY_SECRET_KEY}}
 
       - name: 🐳 Docker 빌드 및 푸시
-        run: docker buildx build -f apps/media/Dockerfile . -t ${{secrets.DOCKER_REGISTRY_URL}}/media:${{ github.sha }} -t ${{secrets.DOCKER_REGISTRY_URL}}/media:latest --push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          file: ./apps/media/Dockerfile
+          tags: ${{secrets.DOCKER_REGISTRY_URL}}/media:${{ github.sha }},${{secrets.DOCKER_REGISTRY_URL}}/media:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
     needs: build
