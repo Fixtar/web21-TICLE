@@ -23,7 +23,7 @@ ENV PATH="${PATH}:${PNPM_HOME}"
 RUN pnpm install -g turbo@^2.2.3
 
 COPY ./apps/media ./apps/media
-COPY ./apps/packages ./apps/packages
+COPY ./packages ./packages
 
 RUN turbo prune @app/media --docker
 
