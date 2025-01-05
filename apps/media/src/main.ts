@@ -9,6 +9,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('MEDIA_SERVER_PORT') ?? 8080;
 
+  console.log('test add');
   await app.listen(port);
 }
 bootstrap();
