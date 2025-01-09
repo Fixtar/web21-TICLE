@@ -31,9 +31,9 @@ FROM base AS runner
 RUN apt-get update \
     && apt-get install -y \
     libc6-dev \
-    # python3 \
-    # python3-pip \
-    # build-essential \
+    python3 \
+    python3-pip \
+    build-essential \
     ffmpeg \ 
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,12 +41,9 @@ WORKDIR /app
 
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-
-RUN npm install -g pnpm
-
-RUN pnpm install --frozen-lockfile
-
 COPY --from=builder /app/out/full/ .
+
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 RUN pnpm build:media
 
